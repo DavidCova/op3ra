@@ -8,6 +8,11 @@ sudo docker-compose ps            # output that shows information about the cont
 sudo docker-compose exec app bash # open an interactive shell session inside the "app" service container.
 docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' op3ra_database_1 # Check the IP address to configure dbeaver host connection
 
+## Redis
+
+docker-compose exec redis redis-cli # Enter the Redis CLI via docker compose
+
+
 ## Linux
 
 mv skeleton/* ./                  # Move everything outside the skeleton folder to the parent directory
@@ -33,6 +38,8 @@ composer require symfony/security-bundle         # Security bundle. Will add a s
 symfony check:requirements
 php bin/console
 php bin/console make:entity
+php bin/console make:user                        # From symfony/security-bundle
+php bin/console make:command                     # Command is prefixed with the project name (app) for grouping sake
 
 ## Doctrine
 
@@ -42,6 +49,11 @@ php bin/console doctrine:migrations:migrate
 
 ## cURL
 
+### Auth
+
+**login**
+curl --location --request GET 'localhost:8000/login' --header 'Content-Type: application/json' --header 'Accept: application/json' --data-raw '{"username":"admin","password":"1234"}'
+
 ### Composer
 
 **index**
@@ -49,9 +61,9 @@ curl --location --request GET 'localhost:8000/composer' --header 'Content-Type: 
 **show**
 curl --location --request GET 'localhost:8000/composer/1' --header 'Content-Type: application/json' --header 'Accept: application/json'
 **create**
-curl --location --request POST 'localhost:8000/composer' --header 'Content-Type: application/json' --header 'Accept: application/json' --data-raw '{"first_name":"Wolfgang","last_name":"Mozart", "date_of_birth":"1756-01-27","country_code":"AT"}'
+curl --location --request POST 'localhost:8000/composer' --header 'Content-Type: application/json' --header 'Accept: application/json' --data-raw '{"firstName":"Wolfgang","lastName":"Mozart", "dateOfBirth":"1756-01-27","countryCode":"AT"}'
 **update**
-curl --location --request PUT 'localhost:8000/composer/20' --header 'Content-Type: application/json' --header 'Accept: application/json' --data-raw '{"first_name":"Wolfgang","last_name":"Mozart", "date_of_birth":"1756-01-27","country_code":"AT"}'
+curl --location --request PUT 'localhost:8000/composer/20' --header 'Content-Type: application/json' --header 'Accept: application/json' --data-raw '{"firstName":"Wolfgang","lastName":"Mozart", "dateOfBirth":"1756-01-27","countryCode":"AT"}'
 **delete**
 curl --location --request DELETE 'localhost:8000/composer/20' --header 'Content-Type: application/json' --header 'Accept: application/json'
 

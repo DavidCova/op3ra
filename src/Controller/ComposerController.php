@@ -10,11 +10,14 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_USER')]
 class ComposerController extends AbstractController
 {
 
     #[Route('/composer', name: 'app_composer_index', methods: [ 'GET' ])]
+    
     public function index(ComposerRepository $repo): JsonResponse
     {
         return $this->json($repo->findAll());
