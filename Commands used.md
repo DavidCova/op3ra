@@ -11,6 +11,7 @@ docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' op3
 ## Redis
 
 docker-compose exec redis redis-cli # Enter the Redis CLI via docker compose
+KEYS *                              # List all keys
 
 
 ## Linux
@@ -53,6 +54,9 @@ php bin/console doctrine:migrations:migrate
 
 **login**
 curl --location --request GET 'localhost:8000/login' --header 'Content-Type: application/json' --header 'Accept: application/json' --data-raw '{"username":"admin","password":"1234"}'
+
+**Passing the Authentication Bearer token**
+-H 'Authorization: Bearer <token>'
 
 ### Composer
 
