@@ -31,7 +31,7 @@ class SymfonyTest extends AbstractApiTest
 
         unset($invalidSymphony['name']);
         
-        $response = $this->post('/symfony', $invalidSymphony, static::$testUserToken);
+        $response = $this->post('/symfony', $invalidSymphony, static::$testAdminToken);
 
         $this->assertSame(422, $response->getStatusCode());
     }
@@ -44,13 +44,13 @@ class SymfonyTest extends AbstractApiTest
             'dateOfBirth' => date('Y-m-d'),
             'countryCode' => 'DE',
         ];
-        $response = $this->post('/composer', $composer, static::$testUserToken);
+        $response = $this->post('/composer', $composer, static::$testAdminToken);
         $this->assertSame(201, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $composerJson = json_decode($response->getContent(), true);
 
         static::$testSymfony['composerId'] = $composerJson['id'];
-        $response = $this->post('/symfony', static::$testSymfony, static::$testUserToken);
+        $response = $this->post('/symfony', static::$testSymfony, static::$testAdminToken);
         $this->assertSame(201, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $json = json_decode($response->getContent(), true);
@@ -77,7 +77,7 @@ class SymfonyTest extends AbstractApiTest
     public function testUpdate(): void
     {
         static::$testSymfony['description'] = 'Foo bar long text description';
-        $response = $this->put('/symfony/' . static::$testSymfony['id'], static::$testSymfony, static::$testUserToken);
+        $response = $this->put('/symfony/' . static::$testSymfony['id'], static::$testSymfony, static::$testAdminToken);
         $this->assertSame(200, $response->getStatusCode());
         $this->assertJson($response->getContent());
 
@@ -90,7 +90,7 @@ class SymfonyTest extends AbstractApiTest
      */
     public function testDelete(): void
     {
-        $response = $this->delete('/symfony/' . static::$testSymfony['id'], static::$testUserToken);
+        $response = $this->delete('/symfony/' . static::$testSymfony['id'], static::$testAdminToken);
         $this->assertSame(204, $response->getStatusCode());
     }
 }

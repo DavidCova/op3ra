@@ -23,7 +23,7 @@ rmdir skeleton                    # Delete the skeleton folder
 
 ## Container
 
-# Composer
+## Composer
 
 composer create-project symfony/skeleton:"6.2.*" #  Creates a new Symfony project based on the Symfony Skeleton package with a version constraint of Symfony 6.2.x
 composer require symfony/orm-pack                # Symfony ORM Pack along with its dependencies, will ask whether we want to add config for dockerfile, which we want.
@@ -33,6 +33,10 @@ composer require symfony/test-pack               # PHPunit etc
 composer require symfony/validator
 composer require symfony/intl
 composer require symfony/security-bundle         # Security bundle. Will add a securiy file, **config/packages/security.yaml**
+
+## PHPUnit
+
+sudo docker-compose exec app php bin/phpunit
 
 # Symfony
 

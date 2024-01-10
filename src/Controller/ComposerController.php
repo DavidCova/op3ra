@@ -17,7 +17,6 @@ class ComposerController extends AbstractController
 {
 
     #[Route('/composer', name: 'app_composer_index', methods: [ 'GET' ])]
-    
     public function index(ComposerRepository $repo): JsonResponse
     {
         return $this->json($repo->findAll());
@@ -29,14 +28,18 @@ class ComposerController extends AbstractController
         return $this->json($composer);
     }
 
+    # #[IsGranted('ROLE_USER')] not necessary with $this->denyAccessUnlessGranted('ROLE_ADMIN'); but also possible to use
     #[Route('/composer', name: 'app_composer_create', methods: [ 'POST' ])]
     public function create(ComposerRepository $repo, SerializerInterface $serializer, ValidatorInterface $validator, Request $request): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $composer = $serializer->deserialize($request->getContent(), Composer::class, 'json', []);
 
         $errors = $validator->validate($composer);
 
-        if(count($errors) > 0) {
+        if (count($errors) > 0)
+        {
             return $this->json($errors, 422);
         }
 
@@ -48,11 +51,14 @@ class ComposerController extends AbstractController
     #[Route('/composer/{id}', name: 'app_composer_update', methods: [ 'PUT' ])]
     public function update(ComposerRepository $repo, SerializerInterface $serializer, ValidatorInterface $validator, Composer $composer, Request $request): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $composer = $serializer->deserialize($request->getContent(), Composer::class, 'json', [ 'object_to_populate' => $composer ]);
 
         $errors = $validator->validate($composer);
 
-        if(count($errors) > 0) {
+        if (count($errors) > 0)
+        {
             return $this->json($errors, 422);
         }
 
@@ -64,6 +70,8 @@ class ComposerController extends AbstractController
     #[Route('/composer/{id}', name: 'app_composer_delete', methods: [ 'DELETE' ])]
     public function delete(ComposerRepository $repo, Composer $composer): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $repo->remove($composer, TRUE);
         return $this->json('', 204);
     }

@@ -19,24 +19,62 @@ abstract class AbstractAPITest extends WebTestCase
         'roles' => [ 'ROLE_USER' ]
     ];
 
+    protected static $testAdminUser = [
+        'username' => 'test_admin',
+        'password' => 'test_admin_password',
+        'roles' => [ 'ROLE_ADMIN' ]
+    ];
+
     protected static $testUserToken;
+    protected static $testAdminToken;
 
     protected function setUp(): void
     {
         $this->client = static::createClient();
 
-        $kernel      = self::bootKernel();
+        $this->prepare_user(static::$testUser);
+        $this->prepare_user(static::$testAdminUser);
+
+        static::$testUserToken  = $this->get_token(static::$testUser);
+        static::$testAdminToken = $this->get_token(static::$testAdminUser);
+    }
+
+    /**
+     * Boot Symfony kernel and prepare the user using the 'app:user-create' command for testing.
+     *
+     * @param array $user The user data to be passed as input to the command.
+     */
+    protected function prepare_user($user)
+    {
+        // Boot Symfony kernel
+        $kernel = self::bootKernel();
+
+        // Create Symfony console application
         $application = new Application($kernel);
+
+        // Disable auto-exit to allow further interaction
         $application->setAutoExit(FALSE);
+
+        // Find the 'app:user-create' command
         $command = $application->find('app:user-create');
 
+        // Create buffered output to capture command output
         $output = new BufferedOutput();
-        $input  = new ArrayInput(static::$testUser);
+
+        // Create array input with user data
+        $input = new ArrayInput($user);
+
+        // Run the 'app:user-create' command with provided input
         $command->run($input, $output);
+    }
 
-        $response = $this->post('/login', static::$testUser);
-
-        static::$testUserToken = json_decode($response->getContent(), TRUE)['token'];
+    /**
+     * @return string Token
+     */
+    protected function get_token($user): string
+    {
+        $response = $this->post('/login', $user);
+        return json_decode($response->getContent(), TRUE)['token'];
     }
 
     protected function get(string $uri, string $token = NULL): Response

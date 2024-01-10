@@ -19,7 +19,7 @@ class ComposerTest extends AbstractAPITest
 
         unset($invalidComposer['firstName']);
         
-        $response = $this->post('/composer', $invalidComposer, static::$testUserToken);
+        $response = $this->post('/composer', $invalidComposer, static::$testAdminToken);
 
         $this->assertSame(422, $response->getStatusCode());
     }
@@ -30,7 +30,7 @@ class ComposerTest extends AbstractAPITest
 
         unset($invalidComposer['countryCode']);
         
-        $response = $this->post('/composer', $invalidComposer, static::$testUserToken);
+        $response = $this->post('/composer', $invalidComposer, static::$testAdminToken);
 
         $this->assertSame(422, $response->getStatusCode());
     }
@@ -41,14 +41,34 @@ class ComposerTest extends AbstractAPITest
 
         $invalidComposer['countryCode'] = 'Atlantis';
         
-        $response = $this->post('/composer', $invalidComposer, static::$testUserToken);
+        $response = $this->post('/composer', $invalidComposer, static::$testAdminToken);
 
         $this->assertSame(422, $response->getStatusCode());
     }
 
-    public function testCreate(): void
+    /**
+     * Test that 401 is returned when no token is provided
+     */
+    public function testCreateIsUnauthorizedWithoutToken(): void
+    {
+        $response = $this->post('/composer', static::$testComposer, NULL);
+
+        $this->assertSame(401, $response->getStatusCode());
+    }
+
+    /**
+     * Test that 403 is returned when used does not have sufficient permissions to access resource
+     */
+    public function testCreateWithInsuficientUserPermissions(): void
     {
         $response = $this->post('/composer', static::$testComposer, static::$testUserToken);
+
+        $this->assertSame(403, $response->getStatusCode());
+    }
+
+    public function testCreate(): void
+    {
+        $response = $this->post('/composer', static::$testComposer, static::$testAdminToken);
 
         $this->assertSame(201, $response->getStatusCode());
         $this->assertJson($response->getContent());
@@ -91,7 +111,7 @@ class ComposerTest extends AbstractAPITest
     {
         static::$testComposer['firstName'] = 'Woflgang Amadeus';
 
-        $response = $this->put('/composer/'. static::$testComposer['id'], static::$testComposer, static::$testUserToken);
+        $response = $this->put('/composer/'. static::$testComposer['id'], static::$testComposer, static::$testAdminToken);
 
         $this->assertSame(200, $response->getStatusCode());
         $this->assertJson($response->getContent());
@@ -104,7 +124,7 @@ class ComposerTest extends AbstractAPITest
     #[Depends('testCreate')]
     public function testDelete(): void
     {
-        $response = $this->delete('/composer/'. static::$testComposer['id'], static::$testUserToken);
+        $response = $this->delete('/composer/'. static::$testComposer['id'], static::$testAdminToken);
 
         $this->assertSame(204, $response->getStatusCode());
         $this->assertEmpty($response = $this->client->getResponse()->getContent());

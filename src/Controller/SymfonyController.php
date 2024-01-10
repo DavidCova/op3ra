@@ -31,6 +31,8 @@ class SymfonyController extends AbstractController
     #[Route('/symfony', name: 'app_symfony_create', methods: [ 'POST' ])]
     public function create(SymfonyRepository $repo, SerializerInterface $serializer, ValidatorInterface $validator, Request $request): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $symfony = $serializer->deserialize($request->getContent(), Symfony::class, 'json', []);
 
         $errors = $validator->validate($symfony);
@@ -48,6 +50,8 @@ class SymfonyController extends AbstractController
     #[Route('/symfony/{id}', name: 'app_symfony_update', methods: [ 'PUT' ])]
     public function update(SymfonyRepository $repo, SerializerInterface $serializer, ValidatorInterface $validator, Symfony $symfony, Request $request): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
         $symfony = $serializer->deserialize($request->getContent(), Symfony::class, 'json', [ 'object_to_populate' => $symfony ]);
 
         $errors = $validator->validate($symfony);
@@ -65,6 +69,8 @@ class SymfonyController extends AbstractController
     #[Route('/symfony/{id}', name: 'app_symfony_delete', methods: [ 'DELETE' ])]
     public function delete(SymfonyRepository $repo, Symfony $symfony): JsonResponse
     {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+        
         $repo->remove($symfony, TRUE);
         return $this->json('', 204);
     }
