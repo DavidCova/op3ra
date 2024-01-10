@@ -33,6 +33,7 @@ composer require symfony/test-pack               # PHPunit etc
 composer require symfony/validator
 composer require symfony/intl
 composer require symfony/security-bundle         # Security bundle. Will add a securiy file, **config/packages/security.yaml**
+composer require nelmio/api-doc-bundle           # API Documentation bundle
 
 ## PHPUnit
 
