@@ -2,26 +2,26 @@
 
 namespace App\Repository;
 
-use App\Entity\Symfony;
+use App\Entity\Symphony;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Symfony>
+ * @extends ServiceEntityRepository<symphony>
  *
- * @method Symfony|null find($id, $lockMode = null, $lockVersion = null)
- * @method Symfony|null findOneBy(array $criteria, array $orderBy = null)
- * @method Symfony[]    findAll()
- * @method Symfony[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Symphony|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Symphony|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Symphony[]    findAll()
+ * @method Symphony[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SymfonyRepository extends ServiceEntityRepository
+class SymphonyRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Symfony::class);
+        parent::__construct($registry, Symphony::class);
     }
 
-    public function save(Symfony $entity, bool $flush = false): void
+    public function save(Symphony $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
 
@@ -30,7 +30,7 @@ class SymfonyRepository extends ServiceEntityRepository
         }
     }
 
-    public function remove(Symfony $entity, bool $flush = false): void
+    public function remove(Symphony $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
 
@@ -40,7 +40,7 @@ class SymfonyRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Symfony[] Returns an array of Symfony objects
+//     * @return Symphony[] Returns an array of symphony objects
 //     */
 //    public function findByExampleField($value): array
 //    {
@@ -54,7 +54,7 @@ class SymfonyRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Symfony
+//    public function findOneBySomeField($value): ?Symphony
 //    {
 //        return $this->createQueryBuilder('s')
 //            ->andWhere('s.exampleField = :val')

@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Repository\SymfonyRepository;
+use App\Repository\SymphonyRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Ignore;
@@ -10,8 +10,8 @@ use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 
-#[ORM\Entity(repositoryClass: SymfonyRepository::class)]
-class Symfony
+#[ORM\Entity(repositoryClass: SymphonyRepository::class)]
+class Symphony
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -25,7 +25,7 @@ class Symfony
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = NULL;
 
-    #[ORM\ManyToOne(inversedBy: 'symfonies')]
+    #[ORM\ManyToOne(inversedBy: 'symphonies')]
     #[ORM\JoinColumn(nullable: false)]
     #[Ignore]
     private ?Composer $composer = NULL;
