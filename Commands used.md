@@ -38,6 +38,10 @@ composer require symfony/security-bundle         # Security bundle. Will add a s
 
 sudo docker-compose exec app php bin/phpunit
 
+## Custom Command (User)
+
+sudo docker-compose exec app php bin/console app:user-create administrador boss ROLE_ADMIN, ROLE_USER
+
 # Symfony
 
 symfony check:requirements

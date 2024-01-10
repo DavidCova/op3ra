@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactoryInterface;
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
-class SymfonyNormalizer extends ObjectNormalizer
+class SymphonyNormalizer extends ObjectNormalizer
 {
     public function __construct(
         private ComposerRepository $repo,
@@ -35,26 +35,26 @@ class SymfonyNormalizer extends ObjectNormalizer
 
     public function supportsNormalization($data, string $format = null, array $context = []): bool
     {
-        return $data instanceof \App\Entity\Symfony;
+        return $data instanceof \App\Entity\Symphony;
     }
 
     public function denormalize(mixed $data, string $type, string $format = null, array $context = []): mixed
     {
-        $symfony = parent::denormalize($data, $type, $format, $context);
+        $symphony = parent::denormalize($data, $type, $format, $context);
         if (empty($data['composerId'])) {
-            return $symfony;
+            return $symphony;
         }
 
         $composer = $this->repo->find($data['composerId']);
         if ($composer) {
-            $symfony->setComposer($composer);
+            $symphony->setComposer($composer);
         }
 
-        return $symfony;
+        return $symphony;
     }
 
     public function supportsDenormalization(mixed $data, string $type, string $format = null, array $context = []): bool
     {
-        return $type == \App\Entity\Symfony::class;
+        return $type == \App\Entity\Symphony::class;
     }
 }

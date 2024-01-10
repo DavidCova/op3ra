@@ -27,19 +27,18 @@ class UserCreateCommand extends Command
     protected function configure(): void
     {
         $this->addArgument('username', InputArgument::REQUIRED, 'Username of the user')
-             ->addArgument('password', InputArgument::REQUIRED, 'Password of the user in plan-text')
+             ->addArgument('password', InputArgument::REQUIRED, 'Password of the user in plain-text')
              ->addArgument('roles', InputArgument::REQUIRED | InputArgument::IS_ARRAY, 'Roles of the user (separate with space)');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-
         $io = new SymfonyStyle($input, $output);
 
         $username = $input->getArgument('username');
         $password = $input->getArgument('password');
         $roles    = $input->getArgument('roles');
-
+        
         if ($this->userRepo->findOneByUsername($username))
         {
             $io->error('User with this username already exists');

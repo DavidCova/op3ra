@@ -1,0 +1,10 @@
+PHPUnit 9.6.15 by Sebastian Bergmann and contributors.
+
+Testing 
+...[error] Uncaught PHP Exception Symfony\Component\HttpKernel\Exception\HttpException: "Full authentication is required to access this resource." at /app/vendor/symfony/security-http/Firewall/ExceptionListener.php line 232
+.[error] Uncaught PHP Exception Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException: "Access Denied." at /app/vendor/symfony/security-http/Firewall/ExceptionListener.php line 136
+............                                                  16 / 16 (100%)
+
+Time: 00:00.899, Memory: 32.00 MB
+
+[30;42mOK (16 tests, 39 assertions)[0m

@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Context;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -20,31 +21,35 @@ class Composer
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Assert\NotBlank(message:'Cannot be null!')]
+    #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
+    #[Groups(['create', 'update'])]
     private ?string $firstName = null;
 
     #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
+    #[Groups(['create', 'update'])]
     private ?string $lastName = null;
 
     #[Assert\NotBlank]
     #[ORM\Column(type: Types::DATE_IMMUTABLE)]
     #[Context([DateTimeNormalizer::FORMAT_KEY => 'Y-m-d'])]
+    #[Groups(['create', 'update'])]
     private ?\DateTimeImmutable $dateOfBirth = null;
 
     #[Assert\NotBlank]
     #[Assert\Country]
     #[ORM\Column(length: 2)]
+    #[Groups(['create', 'update'])]
     private ?string $countryCode = null;
 
-    #[ORM\OneToMany(mappedBy: 'composer', targetEntity: Symfony::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'composer', targetEntity: Symphony::class, orphanRemoval: true)]
     #[Ignore]
-    private Collection $symfonies;
+    private Collection $symphonies;
 
     public function __construct()
     {
-        $this->symfonies = new ArrayCollection();
+        $this->symphonies = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -57,7 +62,7 @@ class Composer
         return $this->firstName;
     }
 
-    public function setFirstName(string $firstName): static
+    public function setFirstName(string $firstName): self
     {
         $this->firstName = $firstName;
 
@@ -69,7 +74,7 @@ class Composer
         return $this->lastName;
     }
 
-    public function setLastName(string $lastName): static
+    public function setLastName(string $lastName): self
     {
         $this->lastName = $lastName;
 
@@ -81,7 +86,7 @@ class Composer
         return $this->dateOfBirth;
     }
 
-    public function setDateOfBirth(\DateTimeImmutable $dateOfBirth): static
+    public function setDateOfBirth(\DateTimeImmutable $dateOfBirth): self
     {
         $this->dateOfBirth = $dateOfBirth;
 
@@ -93,7 +98,7 @@ class Composer
         return $this->countryCode;
     }
 
-    public function setCountryCode(string $countryCode): static
+    public function setCountryCode(string $countryCode): self
     {
         $this->countryCode = $countryCode;
 
@@ -101,29 +106,29 @@ class Composer
     }
 
     /**
-     * @return Collection<int, Symfony>
+     * @return Collection<int, Symphony>
      */
-    public function getSymfonies(): Collection
+    public function getSymphonies(): Collection
     {
-        return $this->symfonies;
+        return $this->symphonies;
     }
 
-    public function addSymfony(Symfony $symfony): static
+    public function addSymphony(Symphony $symphony): self
     {
-        if (!$this->symfonies->contains($symfony)) {
-            $this->symfonies->add($symfony);
-            $symfony->setComposer($this);
+        if (!$this->symphonies->contains($symphony)) {
+            $this->symphonies->add($symphony);
+            $symphony->setComposer($this);
         }
 
         return $this;
     }
 
-    public function removeSymfony(Symfony $symfony): static
+    public function removeSymphony(Symphony $symphony): self
     {
-        if ($this->symfonies->removeElement($symfony)) {
+        if ($this->symphonies->removeElement($symphony)) {
             // set the owning side to null (unless already changed)
-            if ($symfony->getComposer() === $this) {
-                $symfony->setComposer(null);
+            if ($symphony->getComposer() === $this) {
+                $symphony->setComposer(null);
             }
         }
 

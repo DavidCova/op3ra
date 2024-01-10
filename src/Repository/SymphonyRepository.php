@@ -7,7 +7,7 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<symphony>
+ * @extends ServiceEntityRepository<Symphony>
  *
  * @method Symphony|null find($id, $lockMode = null, $lockVersion = null)
  * @method Symphony|null findOneBy(array $criteria, array $orderBy = null)
@@ -40,7 +40,7 @@ class SymphonyRepository extends ServiceEntityRepository
     }
 
 //    /**
-//     * @return Symphony[] Returns an array of symphony objects
+//     * @return Symphony[] Returns an array of Symphony objects
 //     */
 //    public function findByExampleField($value): array
 //    {
