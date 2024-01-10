@@ -13,7 +13,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AuthController extends AbstractController
 {
 
-    #[Route('/login', name: 'app_auth_login')]
+    #[Route('/login', name: 'app_auth_login', methods:['POST'])]
     public function login(#[CurrentUser] User $user, AccessTokenHandler $accessTokenHandler): JsonResponse
     {
         if (!$user)
