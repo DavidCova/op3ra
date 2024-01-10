@@ -6,7 +6,7 @@ use PHPUnit\Framework\Attributes\Depends;
 
 class ComposerTest extends AbstractAPITest
 {
-    private static $test_composer = [
+    private static $testComposer = [
         'firstName' => 'Wolfgang',
         'lastName' => 'Mozart',
         'dateOfBirth' => '1756-01-27',
@@ -15,40 +15,40 @@ class ComposerTest extends AbstractAPITest
 
     public function testCreateReturns422(): void
     {
-        $invalidComposer = static::$test_composer;
+        $invalidComposer = static::$testComposer;
 
         unset($invalidComposer['firstName']);
         
-        $response = $this->post('/composer', $invalidComposer);
+        $response = $this->post('/composer', $invalidComposer, static::$testUserToken);
 
         $this->assertSame(422, $response->getStatusCode());
     }
 
     public function testCreateWithInvalidNameReturns422(): void
     {
-        $invalidComposer = static::$test_composer;
+        $invalidComposer = static::$testComposer;
 
         unset($invalidComposer['countryCode']);
         
-        $response = $this->post('/composer', $invalidComposer);
+        $response = $this->post('/composer', $invalidComposer, static::$testUserToken);
 
         $this->assertSame(422, $response->getStatusCode());
     }
 
     public function testCreateWithInvalidCountryCodeReturns422(): void
     {
-        $invalidComposer = static::$test_composer;
+        $invalidComposer = static::$testComposer;
 
         $invalidComposer['countryCode'] = 'Atlantis';
         
-        $response = $this->post('/composer', $invalidComposer);
+        $response = $this->post('/composer', $invalidComposer, static::$testUserToken);
 
         $this->assertSame(422, $response->getStatusCode());
     }
 
     public function testCreate(): void
     {
-        $response = $this->post('/composer', static::$test_composer);
+        $response = $this->post('/composer', static::$testComposer, static::$testUserToken);
 
         $this->assertSame(201, $response->getStatusCode());
         $this->assertJson($response->getContent());
@@ -57,54 +57,54 @@ class ComposerTest extends AbstractAPITest
 
         $this->assertNotEmpty($json['id']);
 
-        static::$test_composer['id'] = $json['id'];
+        static::$testComposer['id'] = $json['id'];
     }
 
     #[Depends('testCreate')]
     public function testIndex(): void
     {
-        $response = $this->get('/composer');
+        $response = $this->get('/composer', static::$testUserToken);
 
         $this->assertSame(200, $response->getStatusCode());
         $this->assertJson($response->getContent());
 
         $json = json_decode($response->getContent(), TRUE);
 
-        $this->assertTrue(in_array(static::$test_composer, $json));
+        $this->assertTrue(in_array(static::$testComposer, $json));
     }
 
     #[Depends('testCreate')]
     public function testShow(): void
     {
-        $response = $this->get('/composer/'. static::$test_composer['id']);
+        $response = $this->get('/composer/'. static::$testComposer['id'], static::$testUserToken);
 
         $this->assertSame(200, $response->getStatusCode());
         $this->assertJson($response->getContent());
 
         $json = json_decode($response->getContent(), TRUE);
 
-        $this->assertEquals(static::$test_composer, $json);
+        $this->assertEquals(static::$testComposer, $json);
     }
 
     #[Depends('testCreate')]
     public function testUpdate(): void
     {
-        static::$test_composer['firstName'] = 'Woflgang Amadeus';
+        static::$testComposer['firstName'] = 'Woflgang Amadeus';
 
-        $response = $this->put('/composer/'. static::$test_composer['id'], static::$test_composer);
+        $response = $this->put('/composer/'. static::$testComposer['id'], static::$testComposer, static::$testUserToken);
 
         $this->assertSame(200, $response->getStatusCode());
         $this->assertJson($response->getContent());
 
         $json = json_decode($response->getContent(), TRUE);
 
-        $this->assertEquals(static::$test_composer, $json);
+        $this->assertEquals(static::$testComposer, $json);
     }
 
     #[Depends('testCreate')]
     public function testDelete(): void
     {
-        $response = $this->delete('/composer/'. static::$test_composer['id']);
+        $response = $this->delete('/composer/'. static::$testComposer['id'], static::$testUserToken);
 
         $this->assertSame(204, $response->getStatusCode());
         $this->assertEmpty($response = $this->client->getResponse()->getContent());

@@ -17,7 +17,7 @@ class SymfonyTest extends AbstractApiTest
      */
     public function testIndex(): void
     {
-        $response = $this->get('/symfony');
+        $response = $this->get('/symfony', static::$testUserToken);
         $this->assertSame(200, $response->getStatusCode());
         $this->assertJson($response->getContent());
 
@@ -31,7 +31,7 @@ class SymfonyTest extends AbstractApiTest
 
         unset($invalidSymphony['name']);
         
-        $response = $this->post('/symfony', $invalidSymphony);
+        $response = $this->post('/symfony', $invalidSymphony, static::$testUserToken);
 
         $this->assertSame(422, $response->getStatusCode());
     }
@@ -44,13 +44,13 @@ class SymfonyTest extends AbstractApiTest
             'dateOfBirth' => date('Y-m-d'),
             'countryCode' => 'DE',
         ];
-        $response = $this->post('/composer', $composer);
+        $response = $this->post('/composer', $composer, static::$testUserToken);
         $this->assertSame(201, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $composerJson = json_decode($response->getContent(), true);
 
         static::$testSymfony['composerId'] = $composerJson['id'];
-        $response = $this->post('/symfony', static::$testSymfony);
+        $response = $this->post('/symfony', static::$testSymfony, static::$testUserToken);
         $this->assertSame(201, $response->getStatusCode());
         $this->assertJson($response->getContent());
         $json = json_decode($response->getContent(), true);
@@ -63,7 +63,7 @@ class SymfonyTest extends AbstractApiTest
     #[Depends('testCreate')]
     public function testShow(): void
     {
-        $response = $this->get('/symfony/' . static::$testSymfony['id']);
+        $response = $this->get('/symfony/' . static::$testSymfony['id'], static::$testUserToken);
         $this->assertSame(200, $response->getStatusCode());
         $this->assertJson($response->getContent());
 
@@ -77,7 +77,7 @@ class SymfonyTest extends AbstractApiTest
     public function testUpdate(): void
     {
         static::$testSymfony['description'] = 'Foo bar long text description';
-        $response = $this->put('/symfony/' . static::$testSymfony['id'], static::$testSymfony);
+        $response = $this->put('/symfony/' . static::$testSymfony['id'], static::$testSymfony, static::$testUserToken);
         $this->assertSame(200, $response->getStatusCode());
         $this->assertJson($response->getContent());
 
@@ -90,7 +90,7 @@ class SymfonyTest extends AbstractApiTest
      */
     public function testDelete(): void
     {
-        $response = $this->delete('/symfony/' . static::$testSymfony['id']);
+        $response = $this->delete('/symfony/' . static::$testSymfony['id'], static::$testUserToken);
         $this->assertSame(204, $response->getStatusCode());
     }
 }
