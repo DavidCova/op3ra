@@ -25,6 +25,7 @@ rmdir skeleton                    # Delete the skeleton folder
 
 ## Composer
 
+<<<<<<< Updated upstream
 composer create-project symfony/skeleton:"6.2.*" #  Creates a new Symfony project based on the Symfony Skeleton package with a version constraint of Symfony 6.2.x
 composer require symfony/orm-pack                # Symfony ORM Pack along with its dependencies, will ask whether we want to add config for dockerfile, which we want.
 composer require --dev symfony/maker-bundle      # Symfony Maker Bundle as a development dependency to a Symfony project
@@ -33,6 +34,18 @@ composer require symfony/test-pack               # PHPunit etc
 composer require symfony/validator
 composer require symfony/intl
 composer require symfony/security-bundle         # Security bundle. Will add a securiy file, **config/packages/security.yaml**
+=======
+composer create-project symfony/skeleton:"6.2.*"    #  Creates a new Symfony project based on the Symfony Skeleton package with a version constraint of Symfony 6.2.x   
+composer require symfony/orm-pack                   # Symfony ORM Pack along with its dependencies, will ask whether we want to add config for dockerfile, which we want.   
+composer require --dev symfony/maker-bundle         # Symfony Maker Bundle as a development dependency to a Symfony project
+composer require symfony/serializer-pack   
+composer require symfony/test-pack                  # PHPunit etc
+composer require symfony/validator   
+composer require symfony/intl   
+composer require symfony/security-bundle            # Security bundle. Will add a securiy file, **config/packages/security.yaml**
+composer require nelmio/api-doc-bundle              # API Documentation bundle
+docker-compose exec app composer require twig asset # For nelmio
+>>>>>>> Stashed changes
 
 ## PHPUnit
 
@@ -40,7 +53,9 @@ sudo docker-compose exec app php bin/phpunit
 
 ## Custom Command (User)
 
+sudo docker-compose exec app php bin/console app:user-list
 sudo docker-compose exec app php bin/console app:user-create administrador boss ROLE_ADMIN, ROLE_USER
+sudo docker-compose exec app php bin/console app:user-delete 1
 
 # Symfony
 

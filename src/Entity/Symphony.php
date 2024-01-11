@@ -7,6 +7,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Annotation\Context;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -20,22 +21,27 @@ class Symphony
 
     #[Assert\NotBlank]
     #[ORM\Column(length: 255)]
+    #[Groups(['create', 'update'])]
     private ?string $name = NULL;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['create', 'update'])]
     private ?string $description = NULL;
 
     #[ORM\ManyToOne(inversedBy: 'symphonies')]
+    #[Groups(['create', 'update'])]
     #[ORM\JoinColumn(nullable: false)]
     #[Ignore]
     private ?Composer $composer = NULL;
 
     #[ORM\Column]
     #[Context([ DateTimeNormalizer::FORMAT_KEY => 'Y-m-d' ])]
+    #[Groups(['create'])]
     private ?\DateTimeImmutable $createdAt = NULL;
 
     #[ORM\Column(nullable: true)]
     #[Context([ DateTimeNormalizer::FORMAT_KEY => 'Y-m-d' ])]
+    #[Groups(['update'])]
     private ?\DateTimeImmutable $finishedAt = NULL;
 
     public function __construct()

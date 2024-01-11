@@ -1,0 +1,16 @@
+nelmio_api_doc:
+    documentation:
+        info:
+            title: Op3ra
+            description: This is an awesome app!
+            version: 1.0.0
+        components:
+            securitySchemes:
+                Bearer:
+                    type: http
+                    scheme: bearer
+            security:
+                - Bearer: []
+    areas: # to filter documented areas
+        path_patterns:
+            - ^/(?!docs|_error) # Accepts routes under /api except /api/doc
